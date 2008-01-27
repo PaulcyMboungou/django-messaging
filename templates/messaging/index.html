@@ -1,0 +1,28 @@
+{% extends "messaging/minimal.html" %}
+
+{% block title %}Messaging{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+  <div class="messaging">
+  {% load messaging %}
+  {% messaging %}{% endmessaging %}
+  {{ has_message }} / {{ num_messages }}
+  <hr />
+  <a href="javascript:load_msg_list(\'on\')"><img src="/site_media/icons/mail.gif" alt="" class="icon" style="margin-right:0.5em"/></a>
+  {% if has_message %}
+    <span class="has_message"><a href="javascript:read_first_pm()" class="df_msg_unreaded">{{ num_messages }} message(s)</a></span>
+  {% else %}
+    <span>{{ num_messages }} messages</span>
+  {% endif %}
+  <a href="javascript:load_contacts(\'on\')"><img src="/site_media/icons/group.gif" alt="" class="icon" style="margin-left:0.5em"/></a>
+  {% comment %}last={{ last_activity|date:"j F Y - H:i" }}{% endcomment %}
+  {% for contact in contacts %}
+    {{ contact.username }}
+  {% endfor %}
+  </div>
+{% endif %}
+{# <hr /> #}
+{{ message|safe }}
+{% endblock %}
