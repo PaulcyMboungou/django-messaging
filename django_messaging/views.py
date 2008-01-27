@@ -9,4 +9,5 @@ def index(request):
   msg=''
   return render_to_response('messaging/index.html',{'message':msg},context_instance=RequestContext(request))
 
-#def contacts(request): 
+def contacts(request):
+  return 
