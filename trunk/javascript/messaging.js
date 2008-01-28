@@ -3,31 +3,29 @@ function load_index() {
   }
 
 function load_contacts() {
-  load_data("/messaging/contacts/","messaging");
+  load_data("/messaging/contacts/","messaging_contacts");
   }
-function popcontacts(mode) {
-  var main=document.getElementById("df_main");
-  var obj=document.getElementById("df_contacts_img");
+function pop_contacts(mode) {
+  var main=document.getElementById("messaging_contacts");
+  /* var obj=document.getElementById("messaging_contacts_icon"); */
   if (mode=="off") {
     main.style.height="auto";
-    update_display('<a href="javascript:popcontacts('+"'on'"+')"><img src="woo_lib/images/icons/group.gif" title="Groups" alt="Groups" /></a>','df_contacts_img');
-    load_friends();
-    load_nummsg();
+    /* update_display('<a href="javascript:popcontacts('+"'on'"+')"><img class="icon" src="/site_media/icons/group.gif" title="Contacts" alt="Contacts" /></a>','messaging_contacts_icon'); */
+    load_data("/messaging/","messaging_home"); 
+    /* load_nummsg(); */
     }
   else {
     load_contacts();
-    df_title=document.getElementById("df_title");
-    df_title.innerHTML='Contacts';
-    update_display('<a href="javascript:popcontacts('+"'off'"+')"><img src="woo_lib/images/icons/group.gif" title="Groups" alt="Groups" /></a>','df_contacts_img');
+    /* df_title=document.getElementById("df_title");
+    #df_title.innerHTML='Contacts'; */
+    update_display('<a href="javascript:pop_contacts('+"'off'"+')"><img class="icon" src="/site_media/icons/group.gif" title="Contacts" alt="Contacts" /></a>','messaging_contacts_icon');
     }
   }
-function add_contact(username) {
-  url='woo_modules/directfriends/register_contact?username='+username;
-  get_data(url,'df_main');
+function add_contact(contact_id) {
+  load_data('/messaging/contacts/'+contact_id+'/add/','messaging_contacts');
   }
-function remove_contact(username) {
-  url='woo_modules/directfriends/unregister_contact?username='+username;
-  get_data(url,'df_main');
+function remove_contact(contact_id) {
+  load_data('/messaging/contacts/'+contact_id+'/remove/','messaging_contacts')
   }
 function load_friends() {
    url='woo_modules/directfriends/load_friends';

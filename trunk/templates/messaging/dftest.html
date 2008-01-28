@@ -9,12 +9,14 @@
 {{ sidebar }}
 {% block sidebar %}
 <div id="rightbar">
-<script type="text/javascript">load_index()</script>
-<div id="messaging"></div>
-{% lorem 120 w %}
+  <script type="text/javascript">load_index()</script>
+  <div id="messaging"></div>
+  <p>{% lorem 120 w %}</p>
 </div>
 {% endblock %}
 
 {% block content %}
+{{ message }}
+<hr />
 {% lorem 6 p %}
 {% endblock %}
