@@ -1,0 +1,16 @@
+{% extends "messaging/minimal.html" %}
+
+{% block content %}
+{% load logic_filters %}
+{% comment %}
+{{ contacts }}
+<hr />
+{% endcomment %}
+{% for user in users %}
+  {% if user|IN:contacts %}
+    <div style="background:lime"><a href="javascript:remove_contact('{{ user.id  }}')">- {{ user.username }}</a></div>
+  {% else %}
+    <div><a href="javascript:add_contact('{{ user.id  }}')">+ {{ user.username }}</a></div>
+  {% endif %}
+{% endfor %}
+{% endblock %}
