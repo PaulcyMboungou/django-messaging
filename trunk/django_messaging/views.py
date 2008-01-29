@@ -13,7 +13,7 @@ def test(request):
     return HttpResponse('')
 
 def index(request):
-  if request.user.is_authenticated:
+  if request.user.is_authenticated():
     dm_users=DmUser.objects.all().select_related(depth=1).order_by('-last_activity')
     dm_user_current=dm_users.filter(user=request.user)[0]
     #msg=str(dm_user_current.contacts)
@@ -22,7 +22,10 @@ def index(request):
     for dm_user in dm_users:
       if dm_user.user<>request.user:
         if dm_user.user in dm_user_current.contacts.all():
-          dm_user.user.activity=time_to_duration(dm_user.last_activity)
+          dm_user.user.activity,is_offline=time_to_duration(dm_user.last_activity)
+          dm_user.user.is_online=True
+          if is_offline:
+            dm_user.user.is_online=False
           dm_user.user.username=dm_user.user.username
           user_contacts.append(dm_user.user)
     return render_to_response('messaging/index.html',{'user_contacts':user_contacts},context_instance=RequestContext(request))
