@@ -4,6 +4,7 @@
 {% messaging %}{% endmessaging %}
 <div id="messaging_header">
 <a href="javascript:load_msg_list('on')"><img id="pm_icon" class="icon" src="{{ media_url }}messaging/icons/pm.gif" alt="" /></a>
+{{ has_message }}
 {% if has_message %}
   <span class="has_pm"><a href="javascript:read_first_pm()" class="pm_unreaded">{{ num_messages }} message(s)</a></span>
 {% else %}

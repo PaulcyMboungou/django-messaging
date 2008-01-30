@@ -1,10 +1,12 @@
-from django_messaging.models import DmUser
+from django_messaging.models import DmUser, DmMessage
 from django.contrib.auth.models import User
 
 #~ shell functions to control the data
 #users=User.objects.all()
 #dm_users=DmUser.objects.all()
+#dm_messages=DmMessage.objects.all()
 
+#~ ============= users =============
 def list_dm_users(dm_users):
   for dm_user in dm_users:
     print dm_user.user.username
@@ -41,3 +43,4 @@ def create_all_dm_users(users,dm_users):
       dm_user.save()
       print 'dm_user created for '+user.username
   return
+
