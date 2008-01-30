@@ -1,0 +1,5 @@
+{% if user_has_message %}
+  <span class="has_pm"><a href="javascript:read_first_pm()" class="pm_unreaded">{{ num_messages }} message(s)</a></span>
+{% else %}
+  <span>{{ num_messages }} messages</span>
+{% endif %}

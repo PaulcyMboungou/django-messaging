@@ -1,23 +1,33 @@
 from django_messaging.models import DmUser, DmMessage
 from django.contrib.auth.models import User
 
-#~ shell functions to control the data
-#users=User.objects.all()
-#dm_users=DmUser.objects.all()
+#~ ========== init data ===========
+#~ get data
+users=User.objects.all()
+dm_users=DmUser.objects.all()
 #dm_messages=DmMessage.objects.all()
+#~ configure here the users you want to test with
+username1='patrainet'
+username2='testman'
+#~ get user data
+user1=users.filter(username=username1)[0]
+user2=users.filter(username=username2)[0]
+#~ get messaging data stored in the user profile class (defined in AUTH_PROFILE_MODULE in settings.py)
+user1.profile=user1.get_profile()
+user2.profile=user2.get_profile()
 
 #~ ============= users =============
-def list_dm_users(dm_users):
+def list_dm_users():
   for dm_user in dm_users:
     print dm_user.user.username
   return
 
-def list_users(users):
+def list_users():
   for user in users:
     print user.username
   return
 
-def check_all_users(users,dm_users):
+def check_all_users():
   missing=[]
   dm_users_ids=[]
   for dm in dm_users:
@@ -31,7 +41,7 @@ def check_all_users(users,dm_users):
   print ' - '.join(missing)
   return
 
-def create_all_dm_users(users,dm_users):
+def create_all_dm_users():
   dm_users_ids=[]
   for dm in dm_users:
     dm_users_ids.append(dm.user.id)
