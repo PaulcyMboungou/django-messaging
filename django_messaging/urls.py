@@ -6,5 +6,5 @@ urlpatterns = patterns('django_messaging.views',
      (r'^contacts/$', 'contacts.contacts'),
      (r'^contacts/(?P<contact_id>\w+)/add/$', 'contacts.add_contact'),
      (r'^contacts/(?P<contact_id>\w+)/remove/$', 'contacts.remove_contact'),
-     (r'^send_pm/(?P<contact_id>\w+)/$', 'messages.send_pm'),
+     (r'^send_pm/(?P<username>\w+)/$', 'messages.send_pm'),
 )

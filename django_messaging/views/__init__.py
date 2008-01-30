@@ -1,5 +1,6 @@
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django_messaging.models import DmMessage, DmUser
@@ -28,7 +29,7 @@ def index(request):
             dm_user.user.is_online=False
           dm_user.user.username=dm_user.user.username
           user_contacts.append(dm_user.user)
-    return render_to_response('messaging/index.html',{'user_contacts':user_contacts},context_instance=RequestContext(request))
+    return render_to_response('messaging/index.html',{'user_contacts':user_contacts,'media_url':settings.MEDIA_URL},context_instance=RequestContext(request))
   else:
     return HttpResponse('')
 
