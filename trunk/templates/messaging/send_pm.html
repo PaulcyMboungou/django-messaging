@@ -1,17 +1,6 @@
-{% extends "messaging/minimal.html" %}
-
-{% block title %}Messaging{% endblock %}
-
-{% block content %}
-{% comment %}
-{{ has_message }} / {{ num_messages }}
-<hr />
-{% endcomment %}
-<span style="text-align:center;font-size:85%;margin-top:0.6em">
-<form method="post" action="/messaging/post_pm/">
-<textarea name="message" rows="6" style="width:90%"></textarea>
+Message pour {{ contact_username }}:
+<form method="post" name="send_pm_form" action="javascript:post_pm('{{ contact_username }}',document.forms['send_pm_form'].pm.value)">
+<div><textarea name="pm" rows="5" style="width:90%"></textarea></div>
 <input type="hidden" name="user_id" value="{{ contact_username }}" />
-<div class="button"><a href="javascript:post_pm()">Envoyer</a></div>
+<p><input type="submit" value="Envoyer" class="button" id="send_pm_button" /></p>
 </form>
-</span>
-{% endblock %}

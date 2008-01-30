@@ -2,8 +2,8 @@ from django_messaging.models import DmUser
 from django.contrib.auth.models import User
 
 #~ shell functions to control the data
-users=User.objects.all()
-dm_users=DmUser.objects.all()
+#users=User.objects.all()
+#dm_users=DmUser.objects.all()
 
 def list_dm_users(dm_users):
   for dm_user in dm_users:

@@ -14,11 +14,14 @@
   margin-left:0.5em
   }
 /* ======== Boxes ======== */
-.contacts_box {
+#contacts_list {
   text-align:left;
   margin-left:30%;
-  max-height:16em;
+  max-height:26em;
   overflow:auto;
+  }
+.main_box {
+  text-align:center;
   font-size:85%;
   margin-top:0.6em
   }

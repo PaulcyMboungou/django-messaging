@@ -11,7 +11,7 @@ function pop_contacts(mode) {
   if (mode=="off") {
     main.style.height="auto";
     /* update_display('<a href="javascript:popcontacts('+"'on'"+')"><img class="icon" src="/site_media/icons/group.gif" title="Contacts" alt="Contacts" /></a>','messaging_contacts_icon'); */
-    load_data("/messaging/","messaging_home"); 
+    load_index(); 
     /* load_nummsg(); */
     }
   else {
@@ -55,13 +55,15 @@ function delete_pm(pmid) {
    load_nummsg();
    load_msg_list('on');
   }
-function send_pm_now(userid,pm) {
-   url="woo_modules/directfriends/send_pm_process?to="+userid+"&pm="+pm;
-   response=get_data(url,'df_main');
+function post_pm(userid,pm) {
+   url="/messaging/post_pm/"+userid+"/?pm="+pm;
+   load_data(url,'messaging');
+   /*
    url2='woo_modules/directfriends/load_friends';
    response2=get_data(url2,'df_main');
    update_display(response2,'df_main');
    load_nummsg();
+   */
   }
 function load_nummsg() {
    url='woo_modules/directfriends/load_nummsg';

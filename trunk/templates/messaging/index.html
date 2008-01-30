@@ -1,12 +1,9 @@
-{% extends "messaging/minimal.html" %}
+<link href="{{ media_url }}messaging/css/screen.css" rel="stylesheet" type="text/css" media="screen" />
 
-{% block metas %}<link href="{{ media_url }}/messaging/css/screen.css" rel="stylesheet" type="text/css" media="screen" />{% endblock %}
-
-{% block content %}
 {% load messaging %}
 {% messaging %}{% endmessaging %}
 <div id="messaging_header">
-<a href="javascript:load_msg_list('on')"><img id="pm_icon" class="icon" src="/site_media/icons/mail.gif" alt="" /></a>
+<a href="javascript:load_msg_list('on')"><img id="pm_icon" class="icon" src="{{ media_url }}messaging/icons/pm.gif" alt="" /></a>
 {% if has_message %}
   <span class="has_pm"><a href="javascript:read_first_pm()" class="pm_unreaded">{{ num_messages }} message(s)</a></span>
 {% else %}
@@ -15,16 +12,20 @@
 <span id="messaging_contacts_icon"><a href="javascript:pop_contacts('on')"><img id="contacts_icon" class="icon" src="/site_media/icons/group.gif" alt="" /></a></span>
 {% comment %}last={{ last_activity|date:"j F Y - H:i" }}{% endcomment %}
 </div>
-<div id="messaging_contacts" class="contacts_box">
+<div id="messaging_contacts" class="main_box">
+<div id="contacts_list">
+{% if has_no_contacts %}
+  <a href="javascript:pop_contacts('on')">Ajouter mes contacts</a>
+{% endif %}
 {% for user_contact in user_contacts %}
   <div>
   {% if user_contact.is_online %}
-    <img class="icon" src="/site_media/icons/online.png" alt="" />
+    <img class="icon" src="{{ media_url }}messaging/icons/online.png" alt="" />
   {% else %}
-    <img class="icon" class="pixel" src="/site_media/images/pixel.png" alt="" />
+    <img class="icon" class="pixel" src="{{ media_url }}messaging/icons/pixel.png" alt="" />
   {% endif %}
   <a href="javascript:send_pm('{{ user_contact.username }}')">{{ user_contact.username }}</a> {{ user_contact.activity }}
   </div>
 {% endfor %}
 </div>
-{% endblock %}
+</div>
