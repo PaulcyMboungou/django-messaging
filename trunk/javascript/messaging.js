@@ -27,11 +27,6 @@ function add_contact(contact_id) {
 function remove_contact(contact_id) {
   load_data('/messaging/contacts/'+contact_id+'/remove/','messaging_contacts')
   }
-function load_friends() {
-   url='woo_modules/directfriends/load_friends';
-   response=get_data(url,'df_main');
-   update_display(response,'df_main')
-  }
 function load_msg_list(mode) {
   var img='<img src="woo_lib/images/icons/mail_icon.gif" alt="Messages" title="Messages" />';
   var url_close_msg='<a href="javascript:load_msg_list('+"'off'"+')">'+img+'</a>';
@@ -50,10 +45,9 @@ function load_msg_list(mode) {
     }
   }
 function send_pm(userid) {
-   var url="woo_modules/directfriends/send_pm?user_id="+userid;
-   var response=get_data(url,'df_main');
-   update_display(response,'df_main');
-   load_nummsg();
+   var url="/messaging/send_pm/"+userid+'/';
+   load_data(url,'messaging_contacts');
+   /* load_nummsg(); */
   }
 function delete_pm(pmid) {
    var url="woo_modules/directfriends/delete_pm?pmid="+pmid;

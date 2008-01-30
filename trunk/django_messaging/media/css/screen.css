@@ -1,0 +1,28 @@
+/* ======== Images ======== */
+.icon {
+  vertical-align:middle;
+  border:0
+  }
+.pixel {
+  width:16px;
+  height:16px
+  }
+#pm_icon {
+  margin-right:0.5em
+  }
+#contacts_icon {
+  margin-left:0.5em
+  }
+/* ======== Boxes ======== */
+.contacts_box {
+  text-align:left;
+  margin-left:30%;
+  max-height:16em;
+  overflow:auto;
+  font-size:85%;
+  margin-top:0.6em
+  }
+/* 
+.has_pm
+.pm_unreaded
+*/
