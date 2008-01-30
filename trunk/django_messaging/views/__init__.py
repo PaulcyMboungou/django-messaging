@@ -21,7 +21,7 @@ def index(request):
   has_no_contacts=True
   if list(dm_user_current_contacts)<>[]:
     has_no_contacts=False
-  #msg=str(dm_user_current.contacts)
+  #msg=str(dm_user_current.has_message())
   #return render_to_response('debug.html',{'message':msg},context_instance=RequestContext(request))
   user_contacts=[]
   for dm_user in dm_users:
@@ -33,5 +33,5 @@ def index(request):
           dm_user.user.is_online=False
         dm_user.user.username=dm_user.user.username
         user_contacts.append(dm_user.user) 
-  return render_to_response('messaging/index.html',{'has_message':dm_user_current.has_message(),'has_no_contacts':has_no_contacts,'user_contacts':user_contacts,'media_url':settings.MEDIA_URL},context_instance=RequestContext(request))
+  return render_to_response('messaging/index.html',{'user_has_message':dm_user_current.has_message(),'num_messages':dm_user_current.num_messages,'has_no_contacts':has_no_contacts,'user_contacts':user_contacts,'media_url':settings.MEDIA_URL},context_instance=RequestContext(request))
 
