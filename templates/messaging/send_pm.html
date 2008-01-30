@@ -1,0 +1,17 @@
+{% extends "messaging/minimal.html" %}
+
+{% block title %}Messaging{% endblock %}
+
+{% block content %}
+{% comment %}
+{{ has_message }} / {{ num_messages }}
+<hr />
+{% endcomment %}
+<span style="text-align:center;font-size:85%;margin-top:0.6em">
+<form method="post" action="/messaging/post_pm/">
+<textarea name="message" rows="6" style="width:90%"></textarea>
+<input type="hidden" name="user_id" value="{{ contact_username }}" />
+<div class="button"><a href="javascript:post_pm()">Envoyer</a></div>
+</form>
+</span>
+{% endblock %}
