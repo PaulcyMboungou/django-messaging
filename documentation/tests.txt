@@ -1,0 +1,64 @@
+>>> from django.contrib.auth.models import User
+>>> from django_messaging.models import DmUser
+>>> from django_messaging.tests.utils import *
+>>> users=User.objects.all()
+>>> dm_users=DmUser.objects.all()
+>>> list_users(users)
+dominum
+Fernandez
+jean-no
+k2r
+patrainet
+pds
+piervit
+Pitlaloose
+sgamier
+testman
+Zelf
+>>> list_dm_users(dm_users)
+patrainet
+>>> check_all_users(users,dm_users)
+patrainet has dm_user
+###### Users that do not have a dm_user: #####
+dominum - Fernandez - jean-no - k2r - pds - piervit - Pitlaloose - sgamier - testman - Zelf
+>>> create_all_dm_users(users,dm_users)
+dm_user created for dominum
+dm_user created for Fernandez
+dm_user created for jean-no
+dm_user created for k2r
+patrainet already has dm_user
+dm_user created for pds
+dm_user created for piervit
+dm_user created for Pitlaloose
+dm_user created for sgamier
+dm_user created for testman
+dm_user created for Zelf
+>>> dm_users=DmUser.objects.all()
+>>> check_all_users(users,dm_users)
+dominum has dm_user
+Fernandez has dm_user
+jean-no has dm_user
+k2r has dm_user
+patrainet has dm_user
+pds has dm_user
+piervit has dm_user
+Pitlaloose has dm_user
+sgamier has dm_user
+testman has dm_user
+Zelf has dm_user
+###### Users that do not have a dm_user: #####
+
+>>> me=users.filter(username='patrainet')[0]
+>>> him=users.filter(username='testman')[0]
+>>> me_p=me.get_profile()
+>>> me_p.send_message(him,'hello you')
+True
+>>> him_p=him.get_profile()
+>>> him_m=him_p.get_messages()[0]
+>>> him_m.message
+u'hello you'
+>>> him_p.delete_message(him_m.id)
+True
+>>> him_p.get_messages()
+[]
+>>>
