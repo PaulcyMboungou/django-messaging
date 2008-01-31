@@ -30,11 +30,13 @@ class DmUser(models.Model):
     else:
       print str(readed_msgs)+' readed messages'
       print str(unreaded_msgs)+' unreaded messages'
+      print 'num_messages='+str(self.num_messages)
     return
 
   def delete_message(self,message_id):
     msg=DmMessage.objects.get(id=message_id,user=self.user)
-    self.num_messages=self.num_messages-1
+    if msg.readed==False:
+      self.num_messages=self.num_messages-1
     print 'Deleting message '+str(msg)
     msg.delete()
     self.save()
