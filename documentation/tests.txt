@@ -1,6 +1,10 @@
 # 1. Check and create all profiles ===============================
+# Good to do this before starting to use the module: create the
+# profile instances for all users
+# The missing profiles will anyway be created via the middleware:
+# if the user that browses the page does not have his.
+# But run 
 
->>> from django_messaging.tests.utils import *
 >>> list_users()
 dominum
 Fernandez
