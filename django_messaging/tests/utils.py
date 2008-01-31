@@ -13,8 +13,14 @@ username2='testman'
 user1=users.filter(username=username1)[0]
 user2=users.filter(username=username2)[0]
 #~ get messaging data stored in the user profile class (defined in AUTH_PROFILE_MODULE in settings.py)
-user1.profile=user1.get_profile()
-user2.profile=user2.get_profile()
+try:
+  user1.profile=user1.get_profile()
+  user2.profile=user2.get_profile()
+except:
+  pass
+
+#~ ============= notes =============
+#~ It is recomanded to run create_all_profiles() to initiate user profiles before starting to use the module. Use check_profiles() to see what user profiles are not yet created. If a user do not have a profile it is automaticly created via the middleware when the authenticated user loads a page when he is logged in.
 
 #~ ============= users =============
 def list_dm_users():

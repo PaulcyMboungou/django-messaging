@@ -6,12 +6,6 @@ from django.contrib.auth.models import User
 from django_messaging.models import DmMessage, DmUser
 from django_messaging.controlers import time_to_duration
 
-def test(request):
-  msg=''
-  if request.user.is_anonymous():
-    return HttpResponse('')
-  return render_to_response('messaging/dftest.html',{'message':msg},context_instance=RequestContext(request))
-
 def index(request):
   if request.user.is_anonymous():
     return HttpResponse('')
