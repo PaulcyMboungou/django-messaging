@@ -32,20 +32,20 @@ function remove_contact(contact_id) {
   }
 
 function load_msg_list(mode) {
-  var img='<img src="woo_lib/images/icons/mail_icon.gif" alt="Messages" title="Messages" />';
+  var img='<img class="icon" src="/site_media/messaging/icons/pm.gif" alt="" title="Messages" />';
   var url_close_msg='<a href="javascript:load_msg_list('+"'off'"+')">'+img+'</a>';
   var url_open_msg='<a href="javascript:load_msg_list('+"'on'"+')">'+img+'</a>';
   if (mode=='on') {
-    var url='woo_modules/directfriends/messages_list';
-    var response=get_data(url,'df_main');
-    update_display(response,'df_main');
-    update_display(url_close_msg,'df_messages');
+    var url='/messaging/load_msgs_list/';
+    load_data(url,'messaging_contacts');
+    update_display(url_close_msg,'messages_icon');
     load_nummsg();
     }
   else {
-    load_nummsg();
+    load_index();
+    /* load_nummsg();
     load_friends();
-    update_display(url_open_msg,'df_messages');
+    update_display(url_open_msg,'messages');*/
     }
   }
 
@@ -82,7 +82,7 @@ function read_pm(pmid) {
 function read_first_pm() {
    url='/messaging/read_first_pm/';
    load_data(url,'messaging_contacts');
-   load_nummsg();
+   /* load_nummsg(); */
   }
 
 function manage_contact(obj_ref,is_in_list) {

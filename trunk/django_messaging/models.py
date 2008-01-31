@@ -15,10 +15,21 @@ class DmUser(models.Model):
 
   def print_messages(self):
     msgs=DmMessage.objects.filter(user=self.user)
+    readed_msgs=0
+    unreaded_msgs=0
     for msg in msgs:
-      print str(msg.id)+' - '+str(msg)
+      readed='' 
+      if msg.readed:
+        readed=' - readed'
+        readed_msgs=readed_msgs+1
+      else:
+        unreaded_msgs=unreaded_msgs+1
+      print 'id: '+str(msg.id)+' - '+str(msg)+readed
     if list(msgs)==[]:
       print 'No messages'
+    else:
+      print str(readed_msgs)+' readed messages'
+      print str(unreaded_msgs)+' unreaded messages'
     return
 
   def delete_message(self,message_id):
@@ -59,6 +70,7 @@ class DmMessage(models.Model):
   from_user=models.ForeignKey(User,related_name='from_user')
   date=models.DateTimeField(auto_now_add=True)
   message=models.CharField(max_length=255)
+  readed=models.BooleanField(default=False)
 
   def __unicode__(self):
     return self.from_user.username+' -> '+self.user.username

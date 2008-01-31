@@ -1,0 +1,10 @@
+{% if has_messages %}
+  {% for message in messages %}
+     {% if message.readed %}
+       <div><a href="javascript:delete_pm('{{ message_id }}')"><img class="icon" src="{{ media_url }}messaging/icons/trash.gif" alt="Effacer" /></a> {{ message.from_user.username }} - {{ message.date|date:"j F Y - H:i" }}</div> 
+     {% else %}
+      <div class="has_pm"><img src="{{ media_url }}messaging/icons/pixel.png" style="width:8px" alt="" /> {{ message.from_user.username }} - {{ message.date|date:"j F Y - H:i" }}</div>{% endif %}
+  {% endfor %}
+{% else %}
+  Pas de messages
+{% endif %}
