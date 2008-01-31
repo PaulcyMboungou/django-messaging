@@ -1,9 +1,7 @@
->>> from django.contrib.auth.models import User
->>> from django_messaging.models import DmUser
+# 1. Check and create all profiles ===============================
+
 >>> from django_messaging.tests.utils import *
->>> users=User.objects.all()
->>> dm_users=DmUser.objects.all()
->>> list_users(users)
+>>> list_users()
 dominum
 Fernandez
 jean-no
@@ -15,13 +13,13 @@ Pitlaloose
 sgamier
 testman
 Zelf
->>> list_dm_users(dm_users)
+>>> list_dm_users()
 patrainet
->>> check_all_users(users,dm_users)
+>>> check_all_users()
 patrainet has dm_user
 ###### Users that do not have a dm_user: #####
 dominum - Fernandez - jean-no - k2r - pds - piervit - Pitlaloose - sgamier - testman - Zelf
->>> create_all_dm_users(users,dm_users)
+>>> create_all_dm_users()
 dm_user created for dominum
 dm_user created for Fernandez
 dm_user created for jean-no
@@ -34,7 +32,7 @@ dm_user created for sgamier
 dm_user created for testman
 dm_user created for Zelf
 >>> dm_users=DmUser.objects.all()
->>> check_all_users(users,dm_users)
+>>> check_all_users()
 dominum has dm_user
 Fernandez has dm_user
 jean-no has dm_user
@@ -48,17 +46,72 @@ testman has dm_user
 Zelf has dm_user
 ###### Users that do not have a dm_user: #####
 
->>> me=users.filter(username='patrainet')[0]
->>> him=users.filter(username='testman')[0]
->>> me_p=me.get_profile()
->>> me_p.send_message(him,'hello you')
+# 2. Messaging ==================================================
+# configure variables user1 and user2 in tests/utils.py before
+>>> from django_messaging.tests.utils import *
+>>> user1.username
+u'patrainet'
+>>> user2.username
+u'testman'
+>>> from django_messaging.models import *
+>>> profile1=user1.get_profile()
+>>> profile2=user2.get_profile()
+>>> profile1.print_messages()
+id: 19 - Zelf -> patrainet - readed
+id: 16 - testman -> patrainet - readed
+id: 14 - Zelf -> patrainet - readed
+3 readed messages
+0 unreaded messages
+num_messages=0
+>>> profile2.print_messages()
+id: 18 - patrainet -> testman
+id: 13 - patrainet -> testman
+id: 12 - patrainet -> testman
+0 readed messages
+3 unreaded messages
+num_messages=4
+>>> profile2.delete_all_messages()
+Deleting message patrainet -> testman
+Deleting message patrainet -> testman
+Deleting message patrainet -> testman
+3 messages deleted
+>>> profile2.print_messages()
+No messages
+>>> profile1.send_message(user2,'hello')
 True
->>> him_p=him.get_profile()
->>> him_m=him_p.get_messages()[0]
->>> him_m.message
-u'hello you'
->>> him_p.delete_message(him_m.id)
+>>> profile2.print_messages()
+id: 21 - patrainet -> testman
+0 readed messages
+1 unreaded messages
+num_messages=-1
+>>> msg=profile2.get_messages().filter(id=21)[0]
+>>> msg.readed=True
+>>> msg.save()
+>>> profile2.print_messages()
+id: 21 - patrainet -> testman - readed
+1 readed messages
+0 unreaded messages
+num_messages=-1
+>>> profile2.delete_message(21)
+Deleting message patrainet -> testman
 True
->>> him_p.get_messages()
-[]
->>>
+>>> profile2.print_messages()
+No messages
+>>> profile1.print_messages()
+id: 19 - Zelf -> patrainet - readed
+id: 16 - testman -> patrainet - readed
+id: 14 - Zelf -> patrainet - readed
+3 readed messages
+0 unreaded messages
+num_messages=0
+>>> profile2.delete_message(16)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+  File "/usr/lib/python2.4/site-packages/django_messaging/models.py", line 37, in delete_message
+    msg=DmMessage.objects.get(id=message_id,user=self.user)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 69, in get
+    return self.get_query_set().get(*args, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 263, in get
+    raise self.model.DoesNotExist, "%s matching query does not exist." % self.model._meta.object_name
+django.db.models.base.DoesNotExist: DmMessage matching query does not exist.
+>>> 

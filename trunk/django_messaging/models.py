@@ -46,7 +46,6 @@ class DmUser(models.Model):
     msgs=self.get_messages()
     i=0
     for msg in msgs:
-      print 'Deleting message '+str(msg)
       self.delete_message(msg.id)
       i=i+1
     print str(i)+' messages deleted'

@@ -1,0 +1,34 @@
+Put the folder django_messaging in your python path
+
+1. Settings ==================
+
+Register the app: add this line in your INSTALLED_APPS
+
+'django_messaging',
+
+Register the middleware: add this line in your MIDDLEWARE_CLASSES
+
+'django_messaging.middleware.DjangoMessagingMiddleware',
+
+Configure the profile class:
+
+AUTH_PROFILE_MODULE='django_messaging.DmUser'
+
+Note: you have to use django_messaging.DmUser? class for the moment. The ability to use his own AUTH_PROFILE_MODULE class may be added later.
+
+Be sure to have your MEDIA_URL and MEDIA_ROOT settings configured.
+
+2. Templates ===================
+
+Copy the templates/messaging folder to your templates directory.
+
+3. Media files =================
+
+Copy the media directory to the location setup in MEDIA_ROOT and rename this directory to messaging
+
+4. Javascript ==================
+
+Add these lines to your main template to call the javascript libs:
+
+<script type="text/javascript" src="_my_media_url_/messaging/javascript/ajax.js"></script>
+<script type="text/javascript" src="_my_media_url_/messaging/javascript/messaging.js"></script>
