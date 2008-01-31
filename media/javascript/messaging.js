@@ -56,8 +56,8 @@ function send_pm(userid) {
   }
 
 function delete_pm(pmid) {
-   var url="woo_modules/directfriends/delete_pm?pmid="+pmid;
-   var response=get_data(url,'df_main');
+   var url="/messaging/delete_message/"+pmid+'/';
+   load_data(url,'messaging_contacts');
    load_nummsg();
    load_msg_list('on');
   }
@@ -73,16 +73,15 @@ function load_nummsg() {
   }
 
 function read_pm(pmid) {
-   url='woo_modules/directfriends/read_pm?pmid='+pmid;
-   response=get_data(url,'df_main');
-   update_display(response,'df_main');
+   url='/messaging/read_pm/'+pmid+'/';
+   load_data(url,'messaging_contacts');
    load_nummsg();
   }
 
 function read_first_pm() {
    url='/messaging/read_first_pm/';
    load_data(url,'messaging_contacts');
-   /* load_nummsg(); */
+   load_nummsg();
   }
 
 function manage_contact(obj_ref,is_in_list) {
