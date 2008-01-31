@@ -5,6 +5,7 @@
 # if the user that browses the page does not have his.
 # But run 
 
+>>> from django_messaging.tests.utils import *
 >>> list_users()
 dominum
 Fernandez

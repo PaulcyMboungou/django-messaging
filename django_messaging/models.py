@@ -62,9 +62,8 @@ class DmUser(models.Model):
     return True
 
   def has_message(self):
-    if self.num_messages>0:
-      return True
-    return False
+    #~ thanks Kael for the short syntax ;)
+    return self.num_messages>0
 
 class DmMessage(models.Model):
   user=models.ForeignKey(User)
