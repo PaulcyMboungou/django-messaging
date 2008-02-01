@@ -1,6 +1,5 @@
 Message pour {{ contact_username }}:
-<form method="post" name="send_pm_form" action="javascript:post_pm('{{ contact_username }}',document.forms['send_pm_form'].pm.value)">
+<form method="post" name="send_pm_form" action="javascript:post_pm('{{ contact_id }}',document.forms['send_pm_form'].pm.value)">
 <div><textarea name="pm" rows="5" style="width:90%"></textarea></div>
-<input type="hidden" name="user_id" value="{{ contact_username }}" />
 <p><input type="submit" value="Envoyer" class="button" id="send_pm_button" /></p>
 </form>

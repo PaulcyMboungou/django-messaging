@@ -5,15 +5,19 @@
 <div id="messaging_header">
 <span id="messages_icon"><a href="javascript:load_msg_list('on')"><img id="pm_icon" class="icon" src="{{ media_url }}messaging/icons/pm.gif" alt="" /></a></span>
 <span id="messaging_num_msgs">{% if user_has_message %}
-  <span class="has_pm"><a href="javascript:read_first_pm()" class="pm_unreaded">{{ num_messages }} message(s)</a></span>
+  <span class="has_pm"><a href="javascript:read_first_pm()" class="pm_unreaded">{{ user_num_messages }} message(s)</a></span>
 {% else %}
-  <span>{{ num_messages }} messages</span>
+  <span>{{ user_num_messages }} messages</span>
 {% endif %}</span>
 <span id="messaging_contacts_icon"><a href="javascript:pop_contacts('on')"><img id="contacts_icon" class="icon" src="{{ media_url }}messaging/icons/group.gif" alt="" title="Contacts" /></a></span>
 {% comment %}last={{ last_activity|date:"j F Y - H:i" }}{% endcomment %}
 </div>
 <div id="messaging_contacts" class="main_box">
 <div id="contacts_list">
+{% comment %}
+{{ has_no_contacts }}
+{{ user_contacts }}
+{% endcomment %}
 {% if has_no_contacts %}
   <a href="javascript:pop_contacts('on')">Ajouter mes contacts</a>
 {% endif %}
@@ -24,7 +28,7 @@
   {% else %}
     <img class="icon" class="pixel" src="{{ media_url }}messaging/icons/pixel.png" alt="" style="width:16px;height:16px" />
   {% endif %}
-  <a href="javascript:send_pm('{{ user_contact.username }}')">{{ user_contact.username }}</a> {{ user_contact.activity }}
+  <a href="javascript:send_pm('{{ user_contact.dm_user_id }}')">{{ user_contact.username }}</a> {{ user_contact.activity }}
   </div>
 {% endfor %}
 </div>

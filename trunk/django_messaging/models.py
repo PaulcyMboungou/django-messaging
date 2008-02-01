@@ -1,20 +1,25 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 
 class DmUser(models.Model):
   user=models.ForeignKey(User,unique=True,related_name='dm_user')
   last_activity=models.DateTimeField(auto_now_add=True)
-  num_messages=models.IntegerField(default=0)
-  contacts=models.ManyToManyField(User,related_name='dm_contacts')
+  contacts=models.ManyToManyField(User,related_name='dm_contact')
 
   def __unicode__(self):
-    return self.user.username
+    return 'profile> '+self.user.username
+
+  def print_contacts(self):
+    for contact in self.contacts.all():
+      print str(contact.id)+' - '+contact.username
+    return
 
   def get_messages(self):
-    return DmMessage.objects.filter(user=self.user)
+    return self.dmmessage_set.all()
 
   def print_messages(self):
-    msgs=DmMessage.objects.filter(user=self.user)
+    msgs=self.get_messages()
     readed_msgs=0
     unreaded_msgs=0
     for msg in msgs:
@@ -30,16 +35,15 @@ class DmUser(models.Model):
     else:
       print str(readed_msgs)+' readed messages'
       print str(unreaded_msgs)+' unreaded messages'
-      print 'num_messages='+str(self.num_messages)
     return
 
   def delete_message(self,message_id):
-    msg=DmMessage.objects.get(id=message_id,user=self.user)
-    if msg.readed==False:
-      self.num_messages=self.num_messages-1
+    try:
+      msg=self.get_messages().filter(id=message_id)
+    except ObjectDoesNotExists:
+      return False
     print 'Deleting message '+str(msg)
     msg.delete()
-    self.save()
     return True
 
   def delete_all_messages(self):
@@ -49,28 +53,35 @@ class DmUser(models.Model):
       self.delete_message(msg.id)
       i=i+1
     print str(i)+' messages deleted'
-    self.num_messages=0
-    self.save()
     return 
 
   def send_message(self,to_user,message):
-    msg=DmMessage(from_user=self.user,user=to_user,message=message)
-    dm_user=DmUser.objects.get(user=to_user)
-    dm_user.num_messages=dm_user.num_messages+1
+    msg=DmMessage(from_user=self,to_user=to_user,message=message)
     msg.save()
-    dm_user.save()
     return True
 
   def has_message(self):
-    #~ thanks Kael for the short syntax ;)
-    return self.num_messages>0
+    return self.count_unreaded_messages()>0
+
+  def count_messages(self):
+    return self.get_messages().count()
+
+  def count_unreaded_messages(self):
+    readed=0
+    for message in self.get_messages():
+      if message.readed==False:
+        readed=readed+1
+    return readed
+
+  class Admin:
+    pass
 
 class DmMessage(models.Model):
-  user=models.ForeignKey(User)
-  from_user=models.ForeignKey(User,related_name='from_user')
+  to_user=models.ForeignKey(DmUser)
+  from_user=models.ForeignKey(DmUser,related_name='from_user')
   date=models.DateTimeField(auto_now_add=True)
   message=models.CharField(max_length=255)
   readed=models.BooleanField(default=False)
 
   def __unicode__(self):
-    return self.from_user.username+' -> '+self.user.username
+    return self.from_user.user.username+' -> '+self.to_user.user.username
