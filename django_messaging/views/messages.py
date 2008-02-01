@@ -3,19 +3,19 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from django_messaging.models import DmMessage
+from django_messaging.models import DmMessage,DmUser
 from django_messaging.views import index
 
-def send_pm(request,username):
+def send_pm(request,dm_user_id):
   if request.user.is_anonymous():
     return HttpResponse('')
-  return render_to_response('messaging/send_pm.html',{'contact_username':username})
+  return render_to_response('messaging/send_pm.html',{'contact_id':dm_user_id})
 
-def post_pm(request,username):
+def post_pm(request,dm_user_id):
   if request.user.is_anonymous():
     return HttpResponse('')
   profile=request.user.get_profile()
-  to_user=User.objects.get(username=username)
+  to_user=DmUser.objects.get(id=dm_user_id)
   profile.send_message(to_user=to_user,message=request.GET['pm'])
   return index(request)
 
@@ -34,19 +34,15 @@ def read_pm(request,message_id=None,first=False):
           break
   else:
     try:
-      message=DmMessage.objects.get(id=message_id,user=request.user)
+      message=DmMessage.objects.get(id=message_id,to_user=request.user)
     except ObjectDoesNotExist:
       #~ this guy is trying to read other user's pm
       return HttpResponse('Non je crois pas ...')
   if not message:
     return HttpResponse('Impossible de lire le message')
-  #~ update num_messages
-  if message.readed==False:
-    profile.num_messages=profile.num_messages-1
   #~ flag the message as readed
   message.readed=True
   #~ save data
-  profile.save()
   message.save()
   return render_to_response('messaging/read_pm.html',{'message':message})
 
@@ -56,20 +52,24 @@ def read_first_pm(request):
 def load_num_msgs(request):
   if request.user.is_anonymous():
     return HttpResponse('')
-  profile=request.user.get_profile()
+  num_messages=request.user.get_profile().count_unreaded_messages()
   has_message=False
-  if profile.num_messages>0:
+  if num_messages>0:
     has_message=True
-  return render_to_response('messaging/num_messages.html',{'has_message':has_message,'num_messages':profile.num_messages,'media_url':settings.MEDIA_URL})
+  return render_to_response('messaging/num_messages.html',{'has_message':has_message,'num_messages':num_messages,'media_url':settings.MEDIA_URL})
 
 def load_msgs_list(request):
   if request.user.is_anonymous():
     return HttpResponse('')
   profile=request.user.get_profile()
   has_messages=False
-  messages=profile.get_messages().order_by('-date')
-  if len(list(messages))>0:
+  messages_q=profile.get_messages().order_by('-date')
+  if len(list(messages_q))>0:
     has_messages=True
+  messages=[]
+  for message in messages_q:
+    message.from_username=message.from_user.user.username
+    messages.append(message)
   return render_to_response('messaging/messages_list.html',{'messages':messages,'has_messages':has_messages,'media_url':settings.MEDIA_URL})
 
 def delete_message(request,message_id):
