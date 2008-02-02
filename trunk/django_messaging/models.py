@@ -18,6 +18,19 @@ class DmUser(models.Model):
   def get_messages(self):
     return self.dmmessage_set.all()
 
+  def get_message(self,message_id):
+    try:
+      return self.get_messages().filter(id=message_id,to_user=self)[0]
+    except ObjectDoesNotExist:
+      #~ this guy is trying to read other user's pm
+      return None
+
+  def get_first_unreaded_message(self):
+    try:
+      return self.get_messages().order_by('-date').filter(to_user=self,readed=False)[0]
+    except ObjectDoesNotExist:
+      return None
+
   def print_messages(self):
     msgs=self.get_messages()
     readed_msgs=0
