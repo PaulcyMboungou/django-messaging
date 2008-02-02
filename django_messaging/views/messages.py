@@ -3,22 +3,22 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django_messaging.models import DmMessage,DmUser
 from django_messaging.views import index
 
+@login_required
 def send_pm(request,dm_user_id):
-  if request.user.is_anonymous():
-    return None
   return render_to_response('messaging/send_pm.html',{'contact_id':dm_user_id})
 
+@login_required
 def post_pm(request,dm_user_id):
-  if request.user.is_anonymous():
-    return None
   profile=request.user.get_profile()
   to_user=DmUser.objects.get(id=dm_user_id)
   profile.send_message(to_user=to_user,message=request.GET['pm'])
   return index(request)
 
+@login_required
 def read_pm(request,message_id=None,first=None):
   if first:
     message=request.user.get_profile().get_first_unreaded_message()
@@ -33,21 +33,20 @@ def read_pm(request,message_id=None,first=None):
     message.save()
   return render_to_response('messaging/read_pm.html',{'message':message})
 
+@login_required
 def read_first_pm(request):
   return read_pm(request,first=True)
 
+@login_required
 def load_num_msgs(request):
-  if request.user.is_anonymous():
-    return None
   num_messages=request.user.get_profile().count_unreaded_messages()
   has_message=False
   if num_messages>0:
     has_message=True
   return render_to_response('messaging/num_messages.html',{'has_message':has_message,'num_messages':num_messages,'media_url':settings.MEDIA_URL})
 
+@login_required
 def load_msgs_list(request):
-  if request.user.is_anonymous():
-    return None
   profile=request.user.get_profile()
   has_messages=False
   messages_q=profile.get_messages().order_by('-date')
@@ -59,9 +58,8 @@ def load_msgs_list(request):
     messages.append(message)
   return render_to_response('messaging/messages_list.html',{'messages':messages,'has_messages':has_messages,'media_url':settings.MEDIA_URL})
 
+@login_required
 def delete_message(request,message_id):
-  if request.user.is_anonymous():
-    return None
   profile=request.user.get_profile() 
   profile.delete_message(int(message_id)) 
-  return None
+  return HttpResponseRedirect('/messaging/load_msgs_list/')
