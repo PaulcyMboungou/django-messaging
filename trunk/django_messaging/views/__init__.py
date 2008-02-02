@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import user_passes_test
 from django_messaging.models import DmMessage, DmUser
 from django_messaging.controlers import time_to_duration
 
@@ -23,9 +24,9 @@ def index(request):
   if contacts<>[]:
     has_no_contacts=False
   #~ debug
-  msg=[]
-  msg.append('num msgs: '+str(num_messages))
-  msg.append('has msg: '+str(profile.has_message()))
+  #msg=[]
+  #msg.append('num msgs: '+str(num_messages))
+  #msg.append('has msg: '+str(profile.has_message()))
   #msg.append('profile: '+str(profile))
   #msg.append('print contacs: '+str(profile.print_contacts()))
   #return render_to_response('debug.html',{'message':'<br />'.join(msg)},context_instance=RequestContext(request))
