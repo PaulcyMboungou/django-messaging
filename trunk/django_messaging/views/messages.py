@@ -9,7 +9,8 @@ from django_messaging.views import index
 
 @login_required
 def send_pm(request,dm_user_id):
-  return render_to_response('messaging/send_pm.html',{'contact_id':dm_user_id})
+  contact_username=DmUser.objects.get(id=dm_user_id).user.username
+  return render_to_response('messaging/send_pm.html',{'contact_id':dm_user_id,'contact_username':contact_username})
 
 @login_required
 def post_pm(request,dm_user_id):
@@ -31,6 +32,7 @@ def read_pm(request,message_id=None,first=None):
     message.readed=True
     #~ save data
     message.save()
+  message.from_user_username=message.from_user.user.username
   return render_to_response('messaging/read_pm.html',{'message':message})
 
 @login_required

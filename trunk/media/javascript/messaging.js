@@ -8,17 +8,12 @@ function load_contacts() {
 
 function pop_contacts(mode) {
   var main=document.getElementById("messaging_contacts");
-  /* var obj=document.getElementById("messaging_contacts_icon"); */
   if (mode=="off") {
     main.style.height="auto";
-    /* update_display('<a href="javascript:popcontacts('+"'on'"+')"><img class="icon" src="/site_media/icons/group.gif" title="Contacts" alt="Contacts" /></a>','messaging_contacts_icon'); */
     load_index(); 
-    /* load_nummsg(); */
     }
   else {
     load_contacts();
-    /* df_title=document.getElementById("df_title");
-    #df_title.innerHTML='Contacts'; */
     update_display('<a href="javascript:pop_contacts('+"'off'"+')"><img class="icon" src="/site_media/icons/group.gif" title="Contacts" alt="Contacts" /></a>','messaging_contacts_icon');
     }
   }
@@ -43,23 +38,25 @@ function load_msg_list(mode) {
     }
   else {
     load_index();
-    /* load_nummsg();
-    load_friends();
-    update_display(url_open_msg,'messages');*/
     }
   }
 
 function send_pm(userid) {
-   var url="/messaging/send_pm/"+userid+'/';
-   load_data(url,'messaging_contacts');
-   load_nummsg();
+  var url="/messaging/send_pm/"+userid+'/';
+  load_data(url,'messaging_contacts');
+  load_nummsg();
   }
 
-function delete_pm(pmid) {
+function delete_pm(pmid,noload) {
    var url="/messaging/delete_message/"+pmid+'/';
    load_data(url,'messaging_contacts');
-   load_nummsg();
-   load_msg_list('on');
+   if (noload==undefined) {
+     load_nummsg();
+     load_msg_list('on');
+     }
+  /* else {
+    alert(noload);
+    }*/
   }
 
 function post_pm(userid,pm) {
@@ -83,20 +80,3 @@ function read_first_pm() {
    load_data(url,'messaging_contacts');
    load_nummsg();
   }
-
-function manage_contact(obj_ref,is_in_list) {
-  var color="lime";
-  var obj=document.getElementById(obj_ref);
-  var df_switch=document.getElementById("df_switch");
-  if (is_in_list=="yes") {
-    obj.style.background="transparent";
-    remove_contact(obj_ref);
-    update_display('<a href="javascript:manage_contact('+"'"+obj_ref+"'"+",'no')"+'">[<span id="df_switch">+</span>] '+obj_ref+'</a>',obj_ref);
-    }
-  else {
-    obj.style.background=color;
-    add_contact(obj_ref);
-    update_display('<a href="javascript:manage_contact('+"'"+obj_ref+"'"+",'yes')"+'">[<span id="df_switch">-</span>] '+obj_ref+'</a>',obj_ref);
-    }
-  }
-
