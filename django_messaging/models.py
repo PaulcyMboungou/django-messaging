@@ -97,4 +97,7 @@ class DmMessage(models.Model):
   readed=models.BooleanField(default=False)
 
   def __unicode__(self):
-    return self.from_user.user.username+' -> '+self.to_user.user.username
+    return self.from_user.user.username+' ('+str(self.from_user.id)+') -> '+self.to_user.user.username+'('+str(self.to_user.id)+')'
+
+  class Admin:
+    pass

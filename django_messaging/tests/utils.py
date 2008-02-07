@@ -6,14 +6,14 @@ from django.contrib.auth.models import User
 users=User.objects.all()
 dm_users=DmUser.objects.all()
 #dm_messages=DmMessage.objects.all()
-#~ configure here the users you want to test with
-username1='patrainet'
-username2='testman'
-#~ get user data
-user1=users.filter(username=username1)[0]
-user2=users.filter(username=username2)[0]
-#~ get messaging data stored in the user profile class (defined in AUTH_PROFILE_MODULE in settings.py)
 try:
+  #~ configure here the users you want to test with
+  username1='syntax_error'
+  username2='testman'
+  #~ get user data
+  user1=users.filter(username=username1)[0]
+  user2=users.filter(username=username2)[0]
+  #~ get messaging data stored in the user profile class (defined in AUTH_PROFILE_MODULE in settings.py)
   user1.profile=user1.get_profile()
   user2.profile=user2.get_profile()
 except:
@@ -25,7 +25,7 @@ except:
 #~ ============= users =============
 def list_dm_users():
   for dm_user in dm_users:
-    print dm_user.user.username
+    print 'User '+dm_user.user.username+' ('+str(dm_user.user.id)+') - Dm user: '+str(dm_user.id)
   return
 
 def list_users():
